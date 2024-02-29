@@ -13,13 +13,13 @@ ALL_HELP = (By.XPATH, "//h2[text()='Browse all Help pages']")
 @given('Open Circle page')
 def go_to_main(context):
     context.driver.get('https://www.target.com/circle')
-    sleep(2)
+    context.wait.until(...)
 
 
 @given('Open Help Page')
 def go_to_help(context):
     context.driver.get('https://help.target.com/help')
-    sleep(5)
+    context.wait.until(...)
 
 @then('Verify 5 benefits are displayed')
 def benefits_verification(context):

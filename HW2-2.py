@@ -2,7 +2,8 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
-from time import sleep
+from selenium.webdriver.support.wait import WebDriverWait
+
 
 # get the path to the ChromeDriver executable
 driver_path = ChromeDriverManager().install()
@@ -20,7 +21,7 @@ driver.find_element(By.XPATH, "//span[@class='styles__LinkText-sc-1e1g60c-3 dZfg
 
 # step 3 Click SignIn button in the side bar
 driver.find_element(By.XPATH, "//a[@href='/account']").click()
-sleep(6)
+driver.implicitly_wait(4)
 
 # step 4 Verify SignIn page opened
 driver.find_element(By.XPATH, "//span[text()='Sign into your Target account']")

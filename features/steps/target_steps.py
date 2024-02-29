@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
 from behave import given, when, then
-from time import sleep
+from selenium.webdriver.support import expected_conditions as EC
 
 
 SEARCH_FIELD = (By.ID, 'search')
@@ -14,13 +14,14 @@ SEARCH_RESULTS_HEADER = (By.XPATH, "//div[@data-test='resultsHeading']")
 @given('Open Target.com')
 def open_target(context):
     context.driver.get('https://www.target.com/')
+    context.driver.wait.until(EC.visibility_of_element_located(HEADER))
 
 
 @when('Search for Coffee')
 def search_coffe(context):
     context.driver.find_element(By.ID, 'search').send_keys('coffee')
     context.driver.find_element(By.CSS_SELECTOR, "[data-test='@web/Search/SearchButton']").click()
-    sleep(6)
+    context.driver.implicitly_wait(4)
 
 
 @when('Search for huggies baby wipes')
@@ -35,19 +36,19 @@ def open_cart(context):
     context.driver.execute_script("arguments[0].scrollIntoView();", element)
     element.click()
     context.driver.find_element(By.CSS_SELECTOR, "[data-test='orderPickupButton']").click()
-    sleep(4)
+    context.wait()
 
 
 @when('Open the cart')
 def open_cart(context):
     context.driver.find_element(By.CSS_SELECTOR, "use[href='/icons/assets/glyph/Cart.svg#Cart']").click()
-    sleep(4)
+    context.wait()
 
 
 @when('View cart')
 def open_cart(context):
     context.driver.find_element(By.XPATH, "//a[text()='View cart & check out']").click()
-    sleep(4)
+    context.wait()
 
 
 @when('Click on Sign In')
@@ -64,7 +65,7 @@ def open_sign_in_form(context):
 def search_product(context, product):
     context.driver.find_element(*SEARCH_FIELD).send_keys(product)
     context.driver.find_element(*SEARCH_ICON).click()
-    sleep(6)
+    context.wait()
 
 
 @then('Search results for {expected_result} are shown')
