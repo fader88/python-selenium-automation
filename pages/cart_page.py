@@ -8,5 +8,6 @@ class CartPage(Page):
     CART_HEADER = (By.CSS_SELECTOR, "h1[class*='StyledHeading']")
 
     def verify_cart_is_empty(self):
+        sleep(5)
         actual_text = self.driver.find_element(*self.CART_HEADER).text
         assert 'Your cart is empty' == actual_text, f"Expected 'Your cart is empty' but got {actual_text}"
