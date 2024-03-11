@@ -62,7 +62,7 @@ def open_sign_in_form(context):
 
 @when('Search for {product}')
 def search_product(context, product):
-    context.app.header.search_product()
+    context.app.header.search_product(product)
 
 
 @then('Search results for {expected_result} are shown')
