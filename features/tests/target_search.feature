@@ -17,3 +17,9 @@ Feature: Search Test
     |coffee mug     |coffee mug         |coffee+mug           |
     |coffee         |coffee             |coffee               |
     |tea            |tea                |tea                  |
+
+
+  Scenario: Targe cart is empty
+    Given Open Target.com
+    When Open the cart
+    Then Verify cart is empty

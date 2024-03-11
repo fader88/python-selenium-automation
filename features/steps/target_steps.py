@@ -1,11 +1,9 @@
 from selenium.webdriver.common.by import By
 from behave import given, when, then
-from selenium.webdriver.support import expected_conditions as EC
 
 
 SEARCH_FIELD = (By.ID, 'search')
 SEARCH_ICON = (By.XPATH, "//button[@data-test='@web/Search/SearchButton']")
-CART_ICON = (By.CSS_SELECTOR, "[data-test='@web/CartLink']")
 HEADER = (By.CSS_SELECTOR, "[class*='UtilityHeaderWrapper']")
 HEADER_LINKS = (By.CSS_SELECTOR, "[data-test*='@web/GlobalHeader/UtilityHeader']")
 SEARCH_RESULTS_HEADER = (By.XPATH, "//div[@data-test='resultsHeading']")
@@ -13,8 +11,9 @@ SEARCH_RESULTS_HEADER = (By.XPATH, "//div[@data-test='resultsHeading']")
 
 @given('Open Target.com')
 def open_target(context):
-    context.driver.get('https://www.target.com/')
-    context.driver.wait.until(EC.visibility_of_element_located(HEADER))
+    #context.driver.get('https://www.target.com/')
+    #context.driver.wait.until(EC.visibility_of_element_located(HEADER))
+    context.app.main_page.open_main()
 
 
 @when('Search for Coffee')
@@ -41,8 +40,8 @@ def open_cart(context):
 
 @when('Open the cart')
 def open_cart(context):
-    context.driver.find_element(By.CSS_SELECTOR, "use[href='/icons/assets/glyph/Cart.svg#Cart']").click()
-    context.wait()
+    context.app.header.click_cart_icon()
+
 
 
 @when('View cart')
@@ -63,15 +62,12 @@ def open_sign_in_form(context):
 
 @when('Search for {product}')
 def search_product(context, product):
-    context.driver.find_element(*SEARCH_FIELD).send_keys(product)
-    context.driver.find_element(*SEARCH_ICON).click()
-    context.wait()
+    context.app.header.search_product()
 
 
 @then('Search results for {expected_result} are shown')
 def verify_search_results_correct(context, expected_result):
-    actual_text = context.driver.find_element(*SEARCH_RESULTS_HEADER).text
-    assert expected_result in actual_text, f'Expected word {expected_result} not in {actual_text}'
+    context.app.search_results_page.verify_search_results_correct(expected_result)
 
 
 @then('Verify search result')
@@ -83,9 +79,7 @@ def verify_search_results_correct(context):
 
 @then('Verify cart is empty')
 def verify_cart_is_empty(context):
-    context.driver.find_element(By.XPATH, "//h1[text()='Your cart is empty']")
-    print('Test case passed')
-
+    context.app.cart_page.verify_cart_is_empty()
 
 @then('Verify Sign In form displayed')
 def verify_page(context):
@@ -103,5 +97,4 @@ def verify_product_in_cart(context):
 
 @then('Page URL has search term {expected_part_url}')
 def verify_search_results_page_url(context, expected_part_url):
-    url = context.driver.current_url
-    assert expected_part_url in url, f'Expected {expected_part_url} not in {url}'
+    context.app.search_results_page.verify_search_results_page_url(expected_part_url)
